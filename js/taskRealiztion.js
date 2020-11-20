@@ -61,6 +61,7 @@ function galleryClick(e) {
   }
   // 4.Подмена значения атрибута src элемента img.lightbox__image.
   refernces.modalImg.setAttribute('src', e.target.dataset.source);
+  refernces.modalImg.setAttribute('alt', e.target.alt);
   console.log(e.target.dataset.source);
   openModal();
 }
@@ -71,6 +72,7 @@ function galleryClick(e) {
 function closingModal() {
   refernces.jsLightBox.classList.toggle('is-open');
   refernces.modalImg.setAttribute('src', '#');
+  refernces.modalImg.setAttribute('alt', '#');
 }
 
 function openModal() {
