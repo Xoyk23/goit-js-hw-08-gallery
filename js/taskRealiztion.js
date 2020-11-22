@@ -51,6 +51,7 @@ const renderGallery = refernces.jsGallery.insertAdjacentHTML(
 
 refernces.jsGallery.addEventListener('click', galleryClick);
 refernces.jsLightBoxButton.addEventListener('click', closingModal);
+window.addEventListener('keydown', closeByEsc);
 
 // 3.Открытие модального окна по клику на элементе галереи.
 function galleryClick(e) {
@@ -77,4 +78,13 @@ function closingModal() {
 
 function openModal() {
   refernces.jsLightBox.classList.toggle('is-open');
+}
+
+function closeByEsc(e) {
+  if (
+    refernces.jsLightBox.classList.contains('is-open') &&
+    e.code === 'Escape'
+  ) {
+    closingModal();
+  }
 }
