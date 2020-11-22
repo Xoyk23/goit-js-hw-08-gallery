@@ -28,7 +28,7 @@ const renderGallery = refernces.jsGallery.insertAdjacentHTML(
   'beforeend',
   galleryImg
     .map(
-      ({ preview, description, original }) => `<li class='gallery__item'>
+      ({ preview, description, original }, i) => `<li class='gallery__item'>
   <a
     class='gallery__link'
     href='${original}'
@@ -38,6 +38,7 @@ const renderGallery = refernces.jsGallery.insertAdjacentHTML(
       src='${preview}'
       data-source='${original}'
       alt='${description}'
+      data-index="${i}"
     />
   </a>
 </li>`,
@@ -51,7 +52,6 @@ const renderGallery = refernces.jsGallery.insertAdjacentHTML(
 
 refernces.jsGallery.addEventListener('click', galleryClick);
 refernces.jsLightBoxButton.addEventListener('click', closingModal);
-window.addEventListener('keydown', closeByEsc);
 
 // 3.Открытие модального окна по клику на элементе галереи.
 function galleryClick(e) {
@@ -63,6 +63,7 @@ function galleryClick(e) {
   // 4.Подмена значения атрибута src элемента img.lightbox__image.
   refernces.modalImg.setAttribute('src', e.target.dataset.source);
   refernces.modalImg.setAttribute('alt', e.target.alt);
+  refernces.modalImg.setAttribute('data-index', `${e.target.dataset.index}`);
   console.log(e.target.dataset.source);
   openModal();
 }
@@ -70,15 +71,23 @@ function galleryClick(e) {
 // 5.Закрытие модального окна по клику на кнопку button[data-action="close-lightbox"].
 // 6.Очистка значения атрибута src элемента img.lightbox__image.
 
+function openModal() {
+  refernces.jsLightBox.classList.toggle('is-open');
+  window.addEventListener('keydown', closeByEsc);
+  window.addEventListener('keydown', moveLeftByButton);
+  window.addEventListener('keydown', moveRightByButton);
+}
+
 function closingModal() {
   refernces.jsLightBox.classList.toggle('is-open');
   refernces.modalImg.setAttribute('src', '#');
   refernces.modalImg.setAttribute('alt', '#');
+  window.removeEventListener('keydown', closeByEsc);
+  window.removeEventListener('keydown', moveLeftByButton);
+  window.removeEventListener('keydown', moveRightByButton);
 }
 
-function openModal() {
-  refernces.jsLightBox.classList.toggle('is-open');
-}
+// закрытие по ESC
 
 function closeByEsc(e) {
   if (
@@ -88,3 +97,91 @@ function closeByEsc(e) {
     closingModal();
   }
 }
+
+//переключение по кнопкам
+let index;
+
+function setImgIndex() {
+  index = Number(refernces.modalImg.dataset.index);
+}
+
+function changeImgIndex() {
+  refernces.modalImg.dataset.index = index;
+}
+
+function changeImg() {
+  refernces.modalImg.src = galleryImg[index].original;
+  refernces.modalImg.alt = galleryImg[index].description;
+}
+
+function moveRightByClick() {
+  setImgIndex();
+  if (index < galleryImg.length - 1) {
+    index += 1;
+    changeImg();
+    changeImgIndex();
+  }
+}
+
+function moveLeftByClick() {
+  setImgIndex();
+  if (index !== 0) {
+    index -= 1;
+    changeImg();
+    changeImgIndex();
+  }
+}
+
+// для переключения по клавишам
+function moveRightByButton(event) {
+  if (
+    refernces.jsLightBox.classList.contains('is-open') &&
+    event.code === 'ArrowRight'
+  ) {
+    moveRightByClick();
+  }
+}
+
+function moveLeftByButton(event) {
+  if (
+    refernces.jsLightBox.classList.contains('is-open') &&
+    event.code === 'ArrowLeft'
+  ) {
+    moveLeftByClick();
+  }
+}
+
+// ====================================
+
+// function keyPressNextPrev(event) {
+//   const jsGalleryImg = document.querySelectorAll('.gallery__image');
+//   let currentIndex = Number(refernces.modalImg.dataset.index);
+
+//   if (
+//     refernces.jsLightBox.classList.contains('is-open') &&
+//     event.code === 'ArrowRight'
+//   ) {
+//     if (currentIndex === galleryImg.length - 1) {
+//       currentIndex = -1;
+//     }
+
+//     refernces.modalImg.src = `${jsGalleryImg[currentIndex + 1].dataset.source}`;
+//     refernces.modalImg.dataset.index = `${
+//       jsGalleryImg[currentIndex + 1].dataset.index
+//     }`;
+//     refernces.modalImg.alt = `${jsGalleryImg[currentIndex + 1].alt}`;
+//   } else if (
+//     refernces.modalImg.classList.contains('is-open') &&
+//     event.code === 'ArrowLeft'
+//   ) {
+//     if (currentIndex === 0) {
+//       currentIndex = galleryImg.length;
+//     }
+
+//     refs.modalImg.src = `${jsGalleryImg[currentIndex - 1].dataset.source}`;
+//     refs.modalImg.dataset.index = `${
+//       jsGalleryImg[currentIndex - 1].dataset.index
+//     }`;
+//     refs.modalImg.alt = `${jsGalleryImg[currentIndex - 1].alt}`;
+//   }
+// }
