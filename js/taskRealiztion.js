@@ -150,38 +150,3 @@ function moveLeftByButton(event) {
     moveLeftByClick();
   }
 }
-
-// ====================================
-
-// function keyPressNextPrev(event) {
-//   const jsGalleryImg = document.querySelectorAll('.gallery__image');
-//   let currentIndex = Number(refernces.modalImg.dataset.index);
-
-//   if (
-//     refernces.jsLightBox.classList.contains('is-open') &&
-//     event.code === 'ArrowRight'
-//   ) {
-//     if (currentIndex === galleryImg.length - 1) {
-//       currentIndex = -1;
-//     }
-
-//     refernces.modalImg.src = `${jsGalleryImg[currentIndex + 1].dataset.source}`;
-//     refernces.modalImg.dataset.index = `${
-//       jsGalleryImg[currentIndex + 1].dataset.index
-//     }`;
-//     refernces.modalImg.alt = `${jsGalleryImg[currentIndex + 1].alt}`;
-//   } else if (
-//     refernces.modalImg.classList.contains('is-open') &&
-//     event.code === 'ArrowLeft'
-//   ) {
-//     if (currentIndex === 0) {
-//       currentIndex = galleryImg.length;
-//     }
-
-//     refs.modalImg.src = `${jsGalleryImg[currentIndex - 1].dataset.source}`;
-//     refs.modalImg.dataset.index = `${
-//       jsGalleryImg[currentIndex - 1].dataset.index
-//     }`;
-//     refs.modalImg.alt = `${jsGalleryImg[currentIndex - 1].alt}`;
-//   }
-// }
