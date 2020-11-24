@@ -17,6 +17,7 @@ const refernces = {
   jsLightBoxButton: document.querySelector(
     '.lightbox button[data-action="close-lightbox"]',
   ),
+  jsLightBoxOverlay: document.querySelector('.lightbox__overlay'),
   modalImg: document.querySelector('.lightbox__image'),
 };
 
@@ -76,6 +77,7 @@ function openModal() {
   window.addEventListener('keydown', closeByEsc);
   window.addEventListener('keydown', moveLeftByButton);
   window.addEventListener('keydown', moveRightByButton);
+  refernces.jsLightBoxOverlay.addEventListener('click', closingModal);
 }
 
 function closingModal() {
@@ -85,6 +87,7 @@ function closingModal() {
   window.removeEventListener('keydown', closeByEsc);
   window.removeEventListener('keydown', moveLeftByButton);
   window.removeEventListener('keydown', moveRightByButton);
+  refernces.jsLightBoxOverlay.removeEventListener('click', closingModal);
 }
 
 // закрытие по ESC
